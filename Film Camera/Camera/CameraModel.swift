@@ -61,7 +61,7 @@ final class CameraModel {
     var showsGrid = false
 
     /// The film currently loaded into the renderer (`nil` = no film).
-    private(set) var selectedFilmID: String? = UserDefaults.standard.string(forKey: Keys.selectedFilm)
+    private(set) var selectedFilmID: String? = CameraModel.initialFilmID()
 
     var adjustments: FilmAdjustments = CameraModel.savedAdjustments() {
         didSet {
@@ -75,6 +75,7 @@ final class CameraModel {
     private enum Keys {
         static let selectedFilm = "selectedFilm"
         static let adjustments = "adjustments"
+        static let presetMigration = "zhPresetV1"
     }
 
     let renderer: FilmRenderer?
@@ -100,11 +101,24 @@ final class CameraModel {
         renderer?.setAdjustments(adjustments)
     }
 
+    /// 首次启动这一版时，强制用新的默认参数（之后照旧保存用户调的值）。
     private static func savedAdjustments() -> FilmAdjustments {
-        guard let data = UserDefaults.standard.data(forKey: Keys.adjustments),
+        let defaults = UserDefaults.standard
+        guard defaults.bool(forKey: Keys.presetMigration),
+              let data = defaults.data(forKey: Keys.adjustments),
               let value = try? JSONDecoder().decode(FilmAdjustments.self, from: data)
-        else { return .default }
+        else {
+            defaults.set(true, forKey: Keys.presetMigration)
+            return .default
+        }
         return value
+    }
+
+    /// 首次启动默认载入第一款胶卷（Portra 400）。
+    private static func initialFilmID() -> String? {
+        let defaults = UserDefaults.standard
+        guard defaults.bool(forKey: Keys.presetMigration) else { return FilmLibrary.bundledIDs.first }
+        return defaults.string(forKey: Keys.selectedFilm)
     }
 
     // MARK: - Film

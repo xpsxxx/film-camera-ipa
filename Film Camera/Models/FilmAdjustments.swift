@@ -8,8 +8,8 @@ import Foundation
 /// Image adjustments applied on top of the film LUT. All values are normalized
 /// so the shader can consume them directly.
 nonisolated struct FilmAdjustments: Codable, Equatable, Sendable {
-    var lutIntensity: Float = 1
-    var exposure: Float = 0      // EV, -2...2
+    var lutIntensity: Float = 0.7
+    var exposure: Float = 0.3    // EV, -2...2
     var contrast: Float = 0      // -1...1
     var highlights: Float = 0    // -1...1
     var shadows: Float = 0       // -1...1
@@ -19,9 +19,9 @@ nonisolated struct FilmAdjustments: Codable, Equatable, Sendable {
     var fade: Float = 0          // 0...1
     var grain: Float = 0.3       // 0...1
     var grainSize: Float = 0.35  // 0...1
-    var glow: Float = 0          // 0...1
+    var glow: Float = 0.18       // 0...1
     var halation: Float = 0      // 0...1
-    var vignette: Float = 0.2    // 0...1
+    var vignette: Float = 0.1    // 0...1
 
     static let `default` = FilmAdjustments()
 }

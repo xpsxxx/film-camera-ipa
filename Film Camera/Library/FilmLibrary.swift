@@ -15,13 +15,15 @@ final class FilmLibrary {
     static let catalogURL = repositoryURL.appending(path: "film_luts.json")
 
     /// Films shipped inside the app so it works offline from the first launch.
+    /// 默认装载的胶卷，按人像出片推荐排序：
+    /// Portra 400 → Superia 400 → Classic Chrome → 2383 → Ektar 100 → Velvia 50 → Tri-X → HP5+
     static let bundledIDs: [String] = [
         "luts/negative_new/kodak_portra_400.cube",
-        "luts/negative_color/kodak_ektar_100.cube",
         "luts/negative_old/fuji_superia_400.cube",
         "luts/fujixtransiii/fuji_xtrans_iii_classic_chrome.cube",
-        "luts/colorslide/fuji_velvia_50.cube",
         "luts/print/kodak_2383_cuspclip.cube",
+        "luts/negative_color/kodak_ektar_100.cube",
+        "luts/colorslide/fuji_velvia_50.cube",
         "luts/bw/kodak_tri-x_400.cube",
         "luts/bw/ilford_hp_5_plus_400.cube",
     ]
